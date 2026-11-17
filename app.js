@@ -1,34 +1,12 @@
-const chapters = [
-['Codex 是交付工具','入門','把任務當成可交付的工作，而非只索取一段程式碼。','交代目標、上下文、範圍和驗收條件，讓執行結果可以檢查。','閱讀變更與測試結果，保留人的判斷。'],
-['認識 AI 編程的邊界','入門','模型能依上下文產生方案，但流暢的輸出不等於理解全部需求。','明確說明資料流、隱含規則與可能影響的上下游。','以測試、執行結果和審查驗證假設；通過局部測試也不代表沒有其他風險。'],
-['第一次任務：跑通閉環','入門','先選一個小範圍、可回復且驗收明確的任務。','確認環境與專案狀態，委派修改，再觀察執行過程。','檢查差異並執行適當驗證，記錄結果與未解風險。'],
-['選擇適合任務的工作入口','入門','IDE、CLI、App 與 Web 可對應不同工作情境。','依上下文位置、權限、協作方式與任務時長選擇入口。','無論入口為何，都應保留可檢查的變更、測試與交接。'],
-['把單次成功變成可複用流程','實作','在真實專案中先確認目錄、依賴與可執行的驗證路徑。','從最小變更開始，逐步沉澱準備、實作、驗證與交接步驟。','交付時列出目標、改動範圍、已跑驗證和剩餘風險。'],
-['AGENTS.md：專案工作說明','實作','把專案入口、重要目錄、限制與驗證方式寫成團隊可讀的說明。','規則應具體、可操作，並與實際專案狀態保持一致。','從新任務測試文件是否能幫助定位、執行與交接，再持續更新。'],
-['Rules、Hooks 與 Approvals','實作','讓權限與限制對應任務風險，先建立可執行的護欄。','以規則描述邊界，以自動檢查輔助落實，對高影響操作設置適當審核。','定期檢查規則是否有效，避免把文字提醒誤認為技術保障。'],
-['Skill、Subagent 與 MCP','進階','將可重複的方法、可切分的工作及外部能力納入工作流程。','技能提供程序；子任務有明確分工與交付；外部連接應限制所需權限。','彙整並核實各項結果，避免依賴未經檢查的交接。'],
-['接手陌生程式碼庫','實作','先建立專案地圖，理解入口、架構、依賴與測試方式。','先做唯讀勘察，再依影響與不確定性選擇小範圍工作。','透過實際執行與現有文件交叉檢查，標出仍未知的部分。'],
-['修復 Bug 與回歸測試','實作','先蒐集錯誤訊息、重現條件、環境、預期與實際行為。','重現問題並釐清原因，限制修改範圍，針對行為設計測試。','修復後重跑重現案例及相關回歸測試，說明未涵蓋的情況。'],
-['跨前後端功能開發','進階','將需求拆解為介面契約、資料、前端、後端與驗證。','先釐清欄位、權限、例外、遷移和發布順序等跨層決策。','檢查端到端行為與相容性，確保各層交付能一起運作。'],
-['PR、Review 與 CI/CD','進階','自動化可減少重複工作，重要決策仍需要適當的人員審查。','將分析、修復建議與變更放在可審核的流程中，限制自動化權限。','檢視差異、測試與風險，再依團隊規則決定合併與發布。'],
-['從個人流程擴展到團隊','進階','當多人需要重複執行、交接和值班時，將個人經驗轉為共同資產。','共享入口、邊界、驗證要求和交接格式，明確指定責任。','先從核心任務試行，再根據實際協作問題調整。'],
-['邊界、風險與工程方法','進階','把工作效率與可靠性一起衡量：結果需要可檢查、可驗證、可交接。','為高風險操作配置權限、審查與回復方法，不只依賴提示文字。','持續把成功與失敗轉為規則、測試和可複用流程。']
-];
-const handbook = [
-['辦公任務從明確交付開始','入門','先說明目的、來源、讀者與交付格式，讓 AI 能針對實際工作產出成果。','以小任務開始，指定檔案、範圍、輸出位置與完成條件。','開啟成果核對內容、格式及來源，修正後再交付。'],
-['工作報告與分析報告','入門','報告的價值在於回答讀者的問題，而不只是產生文字。','提供背景、資料、受眾及章節要求；區分事實、分析與建議。','逐項核對數字與引用，檢查結論是否由資料支持。'],
-['從報告製作簡報','入門','簡報應提煉決策資訊，讓每一頁傳達一個重點。','交代對象、頁數、時間與結論，再以既有報告為材料。','核對圖表和原始資料、頁面可讀性及敘事順序。'],
-['表格清洗與資料分析','實作','先處理資料品質，再用分類和彙總回答業務問題。','說明欄位、日期格式、去重規則與分類標準，另存清洗結果。','比較清洗前後筆數，抽查分類、空值、公式與彙總。'],
-['搜尋資訊與查證來源','實作','搜尋結果是待驗證的線索，需要核對來源和時效。','定義主題、時間範圍與輸出欄位，蒐集可追溯的來源連結。','交叉核對重要事實、日期與原文，標示尚未確認之處。'],
-['自動化前先手動跑通','進階','重複任務適合自動化，但流程與交付標準應先經實際驗證。','先手動完成一次，確定來源、步驟、時間、結果位置與例外處理。','測試輸出與執行紀錄，定期檢查內容品質及排程是否仍合用。'],
-['把工作方法沉澱成技能','進階','把經過驗證的重複流程寫成可重用的步驟，降低重新交代的成本。','記錄適用情境、輸入、處理步驟、輸出與驗收方式。','用新材料試跑並依結果修訂，避免將過時流程直接套用。'],
-['提示與上下文：用例子降低歧義','入門','具體範例與必要背景有助於縮小期望與結果的落差。','提供期望格式、正反例和限制；複雜工作先拆成可檢查的階段。','檢查輸出是否符合範例及任務目標，針對偏差補充條件。'],
-['權限與資訊安全','實作','依任務需要提供最小必要的檔案與操作權限。','區分讀取、修改及對外操作；涉及敏感資料時先確認可使用範圍。','檢查變更與外部分享對象，保留原始資料和可回復方式。'],
-['實戰：資料到報告與簡報','進階','將資料清洗、分析、報告和簡報串成分階段交付流程。','先理解資料與需求，再清洗彙總、撰寫報告，最後萃取為簡報。','每個階段核對筆數、結論與來源；寄送前確認收件對象和內容。'],
-['實戰：建立個人知識庫','進階','知識庫讓資料可持續收集、整理、查找與再利用。','先規劃分類與索引，匯入少量資料，再把整理流程寫成可重用步驟。','實際搜尋並根據來源製作輸出，檢查索引、連結和更新流程。']
-];
-
-chapters.forEach(x=>x.push('Codex\u5feb\u901f\u5165\u9580')); handbook.forEach(x=>{x.push('Codex\u63d0\u6548\u624b\u518a');chapters.push(x)});
-const cards=document.querySelector('#cards'),search=document.querySelector('#search'),count=document.querySelector('#count'),empty=document.querySelector('#empty'),dialog=document.querySelector('#deck'); let selected=0,page=0;
-function render(){const q=search.value.trim().toLocaleLowerCase();const found=chapters.map((x,i)=>({x,i})).filter(({x})=>(x.join(' ')+' '+(window.lessonPractices?.[i] || '')).toLocaleLowerCase().includes(q));cards.replaceChildren();found.forEach(({x,i})=>{const b=document.createElement('button');b.className='card';b.innerHTML=`<span>${x[1]} / ${x[5]}</span><h3></h3><p></p><strong>閱讀簡報 ↗</strong>`;b.querySelector('h3').textContent=x[0];b.querySelector('p').textContent=x[2];b.onclick=()=>{selected=i;page=0;showSlide();dialog.showModal()};cards.append(b)});count.textContent=`${found.length} 個學習主題`;empty.hidden=found.length>0}
-function showSlide(){const x=chapters[selected], titles=[x[0],'如何運用','如何驗證'];document.querySelector('#progress').textContent=`${x[5]} · ${page+1} / 3`;document.querySelector('#slide-label').textContent=['核心結論','行動方法','驗證與交付'][page];document.querySelector('#slide-title').textContent=titles[page];document.querySelector('#slide-text').textContent=x[page+2];document.querySelector('#prev').disabled=page===0;document.querySelector('#next').disabled=page===2}search.addEventListener('input',render);document.querySelector('#close').onclick=()=>dialog.close();document.querySelector('#prev').onclick=()=>{page--;showSlide()};document.querySelector('#next').onclick=()=>{page++;showSlide()};render();
+const cards=document.querySelector('#cards'),search=document.querySelector('#search');
+function render(){
+ const q=search.value.trim().toLocaleLowerCase();cards.replaceChildren();let count=0;
+ chapters.forEach((x,i)=>{if(!(x.join(' ')+' '+practices[i]).toLocaleLowerCase().includes(q))return;
+ const a=document.createElement('a');a.className='card';a.href=`slides.html?lesson=${i+1}`;
+ const label=document.createElement('span');label.textContent=x[1]+' / '+x[5];
+ const title=document.createElement('h3');title.textContent=x[0];
+ const summary=document.createElement('p');summary.textContent=x[2];
+ const link=document.createElement('strong');link.textContent='閱讀簡報 →';
+ a.append(label,title,summary,link);cards.append(a);count++;
+ });document.querySelector('#count').textContent=count+' 個學習主題';document.querySelector('#empty').hidden=count>0;
+}search.addEventListener('input',render);render();
